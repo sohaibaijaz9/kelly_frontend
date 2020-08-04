@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rhenox.kelly">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_kelly"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_kelly_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".SignupActivity" />
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".NavActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
+            android:name=".UpdateNameActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".UpdatePhoneNumberActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".VerifyPhoneNumberActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".VerifyActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ForgetPasswordVerify"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:screenOrientation="fullSensor" />
+    </application>
+
+</manifest>
