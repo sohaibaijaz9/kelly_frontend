@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +18,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.ramijemli.percentagechartview.PercentageChartView;
+import com.ramijemli.percentagechartview.callback.ProgressTextFormatter;
 import com.rhenox.kelly.LoginActivity;
 import com.rhenox.kelly.R;
+import com.rhenox.kelly.ResetPasswordActivity;
+import com.rhenox.kelly.SignupActivity;
 import com.rhenox.kelly.UpdateNameActivity;
 import com.rhenox.kelly.UpdatePhoneNumberActivity;
+import com.rhenox.kelly.VerifyActivity;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class AccountFragment extends Fragment {
@@ -32,7 +54,11 @@ public class AccountFragment extends Fragment {
     private TextView tv_phone;
     private TextView tv_email;
     private Button btn_update_name;
-    private Button btn_change_phone;
+
+    private TextView txt_change_password;
+    private TextView txt_delete_account;
+
+    private PercentageChartView progressChart;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,7 +69,10 @@ public class AccountFragment extends Fragment {
         tv_phone = fragmentView.findViewById(R.id.tv_phone);
         tv_email = fragmentView.findViewById(R.id.tv_email);
         btn_update_name = fragmentView.findViewById(R.id.btn_update_name);
-        btn_change_phone = fragmentView.findViewById(R.id.btn_change_phone);
+        txt_change_password = fragmentView.findViewById(R.id.txt_change_password);
+        txt_delete_account = fragmentView.findViewById(R.id.txt_delete_account);
+
+        progressChart = fragmentView.findViewById(R.id.progress_wellness);
 
         refreshUserDetails();
 
@@ -72,6 +101,119 @@ public class AccountFragment extends Fragment {
         } );
 
 
+        txt_change_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), ResetPasswordActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        txt_delete_account.setOnClickListener(new View.OnClickListener() {
+
+            String token = sharedPreferences.getString("Token", "");
+            @Override
+            public void onClick(View view) {
+                String URL = LoginActivity.baseurl+"/register/";
+                JSONObject jsonBody = new JSONObject();
+                final String requestBody = jsonBody.toString();
+
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.i("VOLLEY", response.toString());
+                        try {
+
+                            JSONObject json = new JSONObject(response);
+
+                            if (json.getString("status").equals("200")) {
+                                String token = json.getString("token");
+
+                                //Shared Preferences
+                                Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_SHORT).show();
+                                Intent myIntent = new Intent(getActivity(), LoginActivity.class);//Optional parameter
+                                Bundle b = new Bundle();
+                                b.putString("Token", token);
+                                myIntent.putExtras(b);
+                                getActivity().finish();
+                                startActivity(myIntent);
+
+                            }
+                            else if (json.getString("status").equals("400")||json.getString("status").equals("404")) {
+                                Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Log.e("VOLLEY", e.toString());
+
+                        }
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(getActivity(), "Server is temporarily down, sorry for your inconvenience", Toast.LENGTH_SHORT).show();
+                        Log.e("VOLLEY", error.toString());
+                    }
+                })
+
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                            return null;
+
+
+                        }
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("x-access-token", token);
+                        return params;
+                    }
+
+                };
+
+                stringRequest.setRetryPolicy(new RetryPolicy() {
+                    @Override
+                    public int getCurrentTimeout() {
+                        return 50000;
+                    }
+
+                    @Override
+                    public int getCurrentRetryCount() {
+                        return 50000;
+                    }
+
+                    @Override
+                    public void retry(VolleyError error) throws VolleyError {
+
+                    }
+                });
+
+                requestQueue.add(stringRequest);
+
+            }
+        });
+
         btn_update_name.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -84,38 +226,30 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        btn_change_phone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity().getApplicationContext(), UpdatePhoneNumberActivity.class);
-                startActivity(i);
-                getActivity().finish();
-            }
-        });
 
         return fragmentView;
     }
 
 
     private void refreshUserDetails(){
+
         String token = sharedPreferences.getString("Token", "");
-        String first_name= sharedPreferences.getString("first_name", "");
-        String last_name = sharedPreferences.getString("last_name", "");
+        String name = sharedPreferences.getString("name", "");
         String email = sharedPreferences.getString("email","");
         String phone_number = sharedPreferences.getString("phone_number", "");
 
         if (!token.equals("") ){
 
-            if(first_name.equals("") || last_name.equals("")){
-                tv_name.setText("No name registered");
+            if(name.equals("")){
+                tv_name.setText("No registered name");
             }
             else {
-                String name = first_name + " " + last_name;
+
                 tv_name.setText(name);
             }
             if(email.equals(""))
             {
-                tv_email.setText("No email account registered");
+                tv_email.setText("No registered email");
             }
             else{
                 tv_email.setText(email);
@@ -123,7 +257,7 @@ public class AccountFragment extends Fragment {
 
             if(phone_number.equals(""))
             {
-                tv_phone.setText("No phone number registered");
+                tv_phone.setText("No registered phone number");
             }
             else{
                 tv_phone.setText(phone_number);

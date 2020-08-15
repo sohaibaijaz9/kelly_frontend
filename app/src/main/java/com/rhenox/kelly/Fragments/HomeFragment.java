@@ -31,8 +31,6 @@ public class HomeFragment extends Fragment{
     private EditText editText;
     private androidx.appcompat.widget.AppCompatImageButton btn_send;
 
-
-
     private MessageAdapter messageAdapter;
     private ListView messagesView;
 
@@ -46,9 +44,8 @@ public class HomeFragment extends Fragment{
         btn_send =  fragmentView.findViewById(R.id.btn_send);
         messageAdapter = new MessageAdapter(fragmentView.getContext());
         messagesView = (ListView) fragmentView.findViewById(R.id.messages_view);
-
+        messagesView.setStackFromBottom(true);
         messagesView.setAdapter(messageAdapter);
-
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override

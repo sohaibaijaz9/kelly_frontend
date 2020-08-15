@@ -25,12 +25,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,7 +97,8 @@ public class VerifyActivity extends AppCompatActivity {
                 try {
                     String URL = LoginActivity.baseurl+"/register/resend_otp/";
                     JSONObject jsonBody = new JSONObject();
-                    jsonBody.put("authorization", token);
+                    jsonBody.put("x-access-token", token);
+
                     final String requestBody = jsonBody.toString();
                     spinner.setVisibility(View.VISIBLE);
                     spinner_frame.setVisibility(View.VISIBLE);
@@ -131,17 +134,35 @@ public class VerifyActivity extends AppCompatActivity {
                             Toast.makeText(VerifyActivity.this, "Server is temporarily down, sorry for your inconvenience", Toast.LENGTH_SHORT).show();
                             Log.e("VOLLEY", error.toString());
                         }
-                    }){
+                    })
+                    {
+
                         @Override
-                        protected Map<String,String> getParams(){
-                            Map<String,String> params = new HashMap<String, String>();
-                            return params;
+                        public String getBodyContentType() {
+                            return "application/json; charset=utf-8";
                         }
+
+
+                        @Override
+                        public byte[] getBody() throws AuthFailureError {
+                            try {
+                                return requestBody == null ? null : requestBody.getBytes("utf-8");
+                            } catch (UnsupportedEncodingException uee) {
+                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                return null;
+                            }
+                        }
+//                    {
+//                        @Override
+//                        protected Map<String,String> getParams(){
+//                            Map<String,String> params = new HashMap<String, String>();
+//                            return params;
+//                        }
 
                         @Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             Map<String, String>  params = new HashMap<String, String>();
-                            params.put("authorization", token);
+                            params.put("x-access-token", token);
                             return params;
                         }
                     };
@@ -195,10 +216,9 @@ public class VerifyActivity extends AppCompatActivity {
 
                 if (!otp.equals("")){
                     try {
-                        String URL = LoginActivity.baseurl+"/is_verified/";
+                        String URL = LoginActivity.baseurl+"/verify/user/";
                         JSONObject jsonBody = new JSONObject();
                         jsonBody.put("otp", otp);
-                        jsonBody.put("email_or_phone", email_phone);
 
                         final String requestBody = jsonBody.toString();
                         spinner.setVisibility(View.VISIBLE);
@@ -222,7 +242,7 @@ public class VerifyActivity extends AppCompatActivity {
                                         finish();
                                         VerifyActivity.this.startActivity(myIntent);
                                     }
-                                    else if (json.getString("status").equals("400")||json.getString("status").equals("404")) {
+                                    else if (json.getString("status").equals("401")||json.getString("status").equals("400")||json.getString("status").equals("404")) {
                                         Toast.makeText(VerifyActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
                                     }
 //                                    else if (json.getString("status").equals("400")||json.getString("status").equals("404")) {
@@ -241,21 +261,39 @@ public class VerifyActivity extends AppCompatActivity {
                                 Log.e("VOLLEY", error.toString());
                                 System.out.println(error.toString());
                             }
-                        }){
-                            @Override
-                            protected Map<String,String> getParams(){
-                                Map<String,String> params = new HashMap<String, String>();
-                                params.put("otp", otp);
-                                params.put("email_or_phone", email_phone);
+                        })
+                        {
 
-//                                params.put(KEY_EMAIL, email);
-                                return params;
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8";
                             }
+
+
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                try {
+                                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                } catch (UnsupportedEncodingException uee) {
+                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                    return null;
+                                }
+                            }
+//                        {
+//                            @Override
+//                            protected Map<String,String> getParams(){
+//                                Map<String,String> params = new HashMap<String, String>();
+//                                params.put("otp", otp);
+//                                params.put("email_or_phone", email_phone);
+//
+////                                params.put(KEY_EMAIL, email);
+//                                return params;
+//                            }
 
                             @Override
                             public Map<String, String> getHeaders() throws AuthFailureError {
                                 Map<String, String>  params = new HashMap<String, String>();
-                                params.put("authorization", token);
+                                params.put("x-access-token", token);
 
                                 return params;
                             }

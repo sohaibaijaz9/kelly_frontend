@@ -11,17 +11,20 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class UserDetails {
+
 
 
     public static void getUserDetails(final Context context){
@@ -33,8 +36,10 @@ public class UserDetails {
 
             //Getting user details
             try {
-                String URL = LoginActivity.baseurl + "/my_details/";
+                String URL = LoginActivity.baseurl + "/user/details/";
                 JSONObject jsonBody = new JSONObject();
+
+                final String requestBody = jsonBody.toString();
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -45,8 +50,7 @@ public class UserDetails {
 
                             if (json.getString("status").equals("200")) {
                                 SharedPreferences.Editor edit = sharedPreferences.edit();
-                                edit.putString("first_name", json.getString("first_name"));
-                                edit.putString("last_name", json.getString("last_name"));
+                                edit.putString("name", json.getString("name"));
                                 edit.putString("email", json.getString("email"));
                                 edit.putString("phone_number", json.getString("phone_number"));
                                 edit.apply();
@@ -64,19 +68,36 @@ public class UserDetails {
                         Toast.makeText(context, "Server is temporarily down, sorry for your inconvenience", Toast.LENGTH_SHORT).show();
                         Log.e("VOLLEY", error.toString());
                     }
-                }) {
+                })
+                {
+
                     @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<String, String>();
-
-
-                        return params;
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
                     }
+
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                            return null;
+                        }
+                    }
+//                {
+//                    @Override
+//                    protected Map<String, String> getParams() {
+//                        Map<String, String> params = new HashMap<String, String>();
+//
+//                        return params;
+//                    }
 
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> headers = new HashMap<String, String>();
-                        headers.put("Authorization", token);
+                        headers.put("x-access-token", token);
                         return headers;
                     }
                 };

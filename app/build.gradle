@@ -45,8 +45,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation "org.jetbrains.anko:anko:0.10.8"
-
+    implementation 'com.ramijemli.percentagechartview:percentagechartview:0.3.1'
     implementation 'com.github.nkzawa:socket.io-client:0.6.0'
+    implementation 'com.google.android.material:material:1.0.0'
 
     //Socket.io
     implementation('io.socket:socket.io-client:1.0.0') {

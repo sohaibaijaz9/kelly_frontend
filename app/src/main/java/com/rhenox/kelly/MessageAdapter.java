@@ -66,7 +66,7 @@ public class MessageAdapter extends BaseAdapter {
 
             holder.name.setText("Kelly");
             holder.messageBody.setText(message.getText());
-            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
+//            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
 
         }
 

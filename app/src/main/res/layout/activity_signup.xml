@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="400dp"
         app:layout_constraintWidth_percent="1"
         app:layout_constraintHeight_percent="0.4"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,19 +22,20 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="408dp"
-            android:layout_height="291dp"
+            android:layout_height="427dp"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1"
-            app:srcCompat="@mipmap/ic_kelly_foreground" />
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@mipmap/signup_image" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="400dp"
         android:layout_marginTop="350dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,12 +43,12 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.9"
         app:layout_constraintWidth_percent="1">
 
         <LinearLayout
             android:layout_width="286dp"
-            android:layout_height="378dp"
+            android:layout_height="315dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,92 +59,97 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/EditTextTheme"
-                >
+                android:theme="@style/EditTextTheme">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_email"
+                    android:id="@+id/txt_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email"
+                    android:hint="What is your name?"
+                    android:fontFamily="@font/raleway_medium"
                     android:singleLine="true"
-                    android:theme="@style/EditTextTheme"
-                    />
+                    android:theme="@style/EditTextTheme" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txt_phone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/EditTextTheme"
-                >
+                android:visibility="invisible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Phone Number"
-                    android:phoneNumber="true"
+                    android:hint="What is your mobile number?"
+                    android:inputType="phone"
                     android:singleLine="true"
-                    android:theme="@style/EditTextTheme"
-                    />
+                    android:fontFamily="@font/raleway_medium"
+                    android:theme="@style/EditTextTheme" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txt_password_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/EditTextTheme"
-                >
+                android:visibility="invisible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Pin"
+                    android:hint="Set your pin"
                     android:inputType="numberPassword"
+                    android:fontFamily="@font/raleway_medium"
                     android:password="true"
                     android:singleLine="true"
-                    android:theme="@style/EditTextTheme"
-                    />
+                    android:theme="@style/EditTextTheme" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/EditTextTheme"
-
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_password2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Confirm Pin"
-                    android:inputType="numberPassword"
-                    android:password="true"
-                    android:singleLine="true"
-                    android:theme="@style/EditTextTheme"
-                    />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_weight="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/btn_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_background"
-                android:text="Sign up"
-                android:textColor="@color/colorWhite"
-                android:textSize="18dp"
-                android:textStyle="bold" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="10dp" />
+                android:layout_height="20dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_signup"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_bold"
+                android:text="SIGN UP"
+                android:textColor="@color/baseColor"
+                android:textSize="18sp"
+                app:backgroundTint="@android:color/transparent"
+                app:cornerRadius="8dp"
+                app:rippleColor="#33AAAAAA"
+                app:strokeColor="@color/baseColor"
+                app:strokeWidth="2dp"
+
+                />
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_signup"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/button_background"-->
+<!--                android:text="Sign up"-->
+<!--                android:textColor="@color/colorWhite"-->
+<!--                android:textSize="18dp"-->
+<!--                android:textStyle="bold" />-->
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/txt_login"
@@ -152,10 +158,11 @@
                 android:clickable="true"
                 android:text="Already have an account"
                 android:textAlignment="center"
+                android:fontFamily="@font/raleway_bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/colerDogerBlue"
                 android:textIsSelectable="false"
-                android:textSize="20sp"
+                android:textSize="18sp"
 
                 />
         </LinearLayout>

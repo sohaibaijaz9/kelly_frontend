@@ -18,17 +18,20 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,10 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar spinner;
     private TextView tv_forget_password;
 
-
-
-
-    public static String baseurl= "http://ec2-52-15-104-184.us-east-2.compute.amazonaws.com";
+    public static String baseurl= "https://sohaib-48e32780.localhost.run";
 
     private int backpress = 0;
     @Override
@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
             this.finish();
         }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,11 +108,10 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
         if(!sharedPreferences.getString("Token",  "").isEmpty()) {
-            Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+            Intent intent = new Intent(LoginActivity.this, NavActivity.class);
             finish();
-            LoginActivity.this.startActivity(intent);
+            startActivity(intent);
         }
-
         // Do here
 //        String rides = sharedPreferences.getString("user_rides", "");
 //        user_rides.setVisibility(View.GONE);
@@ -164,9 +162,11 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     String URL = baseurl+"/login/";
                     JSONObject jsonBody = new JSONObject();
-                    jsonBody.put("email_or_phone", email_phone);
+                    jsonBody.put("phone_number", email_phone);
                     jsonBody.put("password", password);
+
                     final String requestBody = jsonBody.toString();
+                    System.out.println(requestBody);
                     spinner.setVisibility(View.VISIBLE);
                     spinner_frame.setVisibility(View.VISIBLE);
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
@@ -181,8 +181,8 @@ public class LoginActivity extends AppCompatActivity {
                                 JSONObject json = new JSONObject(response);
                                 if (json.getString("status").equals("200")) {
                                     token = json.getString("token");
-                                    if(json.getString("message").equals("User not authenticated. Please verify first.")){
-                                        Toast.makeText(LoginActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
+                                    if(json.getString("message").equals("OTP has been successfully sent.")){
+                                        Toast.makeText(LoginActivity.this, "User not verified!", Toast.LENGTH_SHORT).show();
                                         Intent myIntent = new Intent(LoginActivity.this, VerifyActivity.class);//Optional parameters
                                         Bundle b = new Bundle();
                                         b.putString("Token", token);
@@ -200,14 +200,15 @@ public class LoginActivity extends AppCompatActivity {
 
                                         UserDetails.getUserDetails(LoginActivity.this);
 
-                                        Intent myIntent = new Intent(LoginActivity.this, SplashActivity.class);//Optional parameters
+                                        Intent myIntent = new Intent(LoginActivity.this, NavActivity.class);//Optional parameters
                                         finish();
-                                        LoginActivity.this.startActivity(myIntent);
+                                        startActivity(myIntent);
                                     }
 
                                 }
                                 else if (json.getString("status").equals("401")||json.getString("status").equals("404")) {
                                     Toast.makeText(LoginActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
+
                                 }
                             } catch (JSONException e) {
                                 Log.e("VOLLEY", e.toString());
@@ -222,18 +223,38 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Server is temporarily down, sorry for your inconvenience", Toast.LENGTH_SHORT).show();
                             Log.e("VOLLEY", error.toString());
                         }
-                    }){
+                    })
+                    {
+
                         @Override
-                        protected Map<String,String> getParams(){
-                            Map<String,String> params = new HashMap<String, String>();
-                            params.put("email_or_phone",email_phone);
-                            params.put("password",password);
-//                                params.put(KEY_EMAIL, email);
-                            return params;
+                        public String getBodyContentType() {
+                            return "application/json; charset=utf-8";
                         }
 
 
+                        @Override
+                        public byte[] getBody() throws AuthFailureError {
+                            try {
+                                return requestBody == null ? null : requestBody.getBytes("utf-8");
+                            } catch (UnsupportedEncodingException uee) {
+                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                return null;
+                            }
+                        }
+
                     };
+//                    {
+//                        @Override
+//                        protected Map<String,String> getParams(){
+//                            Map<String,String> params = new HashMap<String, String>();
+//                            params.put("email_or_phone",email_phone);
+//                            params.put("password",password);
+////                                params.put(KEY_EMAIL, email);
+//                            return params;
+//                        }
+//
+//
+//                    };
 
                     stringRequest.setRetryPolicy(new RetryPolicy() {
                         @Override

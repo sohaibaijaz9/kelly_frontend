@@ -25,12 +25,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,6 +103,13 @@ public class UpdateNameActivity extends AppCompatActivity {
                         String URL = LoginActivity.baseurl + "/update/name/";
                         spinner.setVisibility(View.VISIBLE);
                         spinner_frame.setVisibility(View.VISIBLE);
+
+                        JSONObject jsonBody = new JSONObject();
+                        jsonBody.put("first_name", first_name);
+                        jsonBody.put("last_name", last_name);
+                        jsonBody.put("name", first_name+" "+last_name);
+
+                        final String requestBody = jsonBody.toString();
                         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -131,19 +140,39 @@ public class UpdateNameActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Server is temporarily down, sorry for your inconvenience", Toast.LENGTH_SHORT).show();
                                 Log.e("VOLLEY", error.toString());
                             }
-                        }) {
+                        })
+                        {
+
                             @Override
-                            protected Map<String, String> getParams() {
-                                Map<String, String> params = new HashMap<String, String>();
-                                params.put("first_name", first_name);
-                                params.put("last_name", last_name);
-                                return params;
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8";
                             }
+
+
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                try {
+                                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                } catch (UnsupportedEncodingException uee) {
+                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                    return null;
+                                }
+                            }
+
+
+//                        {
+//                            @Override
+//                            protected Map<String, String> getParams() {
+//                                Map<String, String> params = new HashMap<String, String>();
+//                                params.put("first_name", first_name);
+//                                params.put("last_name", last_name);
+//                                return params;
+//                            }
 
                             @Override
                             public Map<String, String> getHeaders() throws AuthFailureError {
                                 Map<String, String> params = new HashMap<String, String>();
-                                params.put("Authorization", token);
+                                params.put("x-access-token", token);
                                 return params;
                             }
 

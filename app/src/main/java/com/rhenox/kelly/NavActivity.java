@@ -25,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
@@ -34,6 +35,7 @@ import com.rhenox.kelly.Fragments.HomeFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,7 +104,6 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
                 break;
 
-
             case R.id.nav_logout:
 
 //                SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -116,7 +117,10 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
                     String URL = LoginActivity.baseurl + "/logout/";
                     spinner.setVisibility(View.VISIBLE);
                     spinner_frame.setVisibility(View.VISIBLE);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                    JSONObject jsonBody = new JSONObject();
+
+                    final String requestBody = jsonBody.toString();
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             spinner.setVisibility(View.GONE);
@@ -126,19 +130,20 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
                                 JSONObject json = new JSONObject(response);
                                 if (json.getString("status").equals("200")) {
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.remove("token");
                                     editor.remove("Token");
                                     editor.remove("first_name");
                                     editor.remove("last_name");
                                     editor.remove("email");
                                     editor.remove("phone_number");
-                                    editor.remove("user_rides");
                                     editor.apply();
                                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                     Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
                                     finish();
                                     startActivity(intent);
                                 }
-                                else if (json.getString("status").equals("400")||json.getString("status").equals("404")) {
+                                else if (json.getString("status").equals("405")||json.getString("status").equals("400")||json.getString("status").equals("404")) {
+
                                     Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
@@ -154,18 +159,37 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
                             Toast.makeText(getApplicationContext(), "Server is temporarily down, sorry for your inconvenience", Toast.LENGTH_SHORT).show();
                             Log.e("VOLLEY", error.toString());
                         }
-                    }){
-                        @Override
-                        protected Map<String,String> getParams(){
-                            Map<String,String> params = new HashMap<String, String>();
+                    })
+                    {
 
-                            return params;
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/json; charset=utf-8";
                         }
+
+
+                        @Override
+                        public byte[] getBody() throws AuthFailureError {
+                            try {
+                                return requestBody == null ? null : requestBody.getBytes("utf-8");
+                            } catch (UnsupportedEncodingException uee) {
+                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                return null;
+                            }
+                        }
+
+//                    {
+//                        @Override
+//                        protected Map<String,String> getParams(){
+//                            Map<String,String> params = new HashMap<String, String>();
+//
+//                            return params;
+//                        }
 
                         @Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             Map<String, String>  params = new HashMap<String, String>();
-                            params.put("Authorization", token);
+                            params.put("x-access-token", token);
                             return params;
                         }
 

@@ -71,9 +71,11 @@
                     android:layout_height="wrap_content"
                     android:hint="First Name"
                     android:selectAllOnFocus="true"
+                    android:fontFamily="@font/raleway_medium"
                     android:singleLine="true"
                     android:theme="@style/EditTextTheme"
                     />
+
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -92,6 +94,7 @@
                     android:id="@+id/txt_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/raleway_medium"
                     android:hint="Last Name"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
@@ -105,15 +108,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="21dp" />
 
-            <Button
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/name_update_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_background"
-                android:fontFamily="@font/montserrat"
-                android:text="Update"
-                android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:fontFamily="@font/raleway_bold"
+                android:text="SUBMIT"
+                android:textColor="@color/baseColor"
+                android:textSize="18sp"
+                app:backgroundTint="@android:color/transparent"
+                app:cornerRadius="8dp"
+                app:rippleColor="#33AAAAAA"
+                app:strokeColor="@color/baseColor"
+                app:strokeWidth="2dp"
+
+                />
+<!--            <Button-->
+<!--                android:id="@+id/name_update_btn"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/button_background"-->
+<!--                android:fontFamily="@font/montserrat"-->
+<!--                android:text="Update"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/colorWhite"-->
+<!--                android:textSize="18dp" />-->
+
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

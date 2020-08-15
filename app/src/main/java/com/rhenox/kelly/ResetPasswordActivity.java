@@ -2,6 +2,7 @@ package com.rhenox.kelly;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,11 +18,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -38,7 +41,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private EditText pin1;
     private EditText pin2;
-
+    private SharedPreferences sharedPreferences;
     private String email_or_phone;
     private String token_uuid;
     private FrameLayout spinner_frame;
@@ -54,10 +57,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
         spinner.setVisibility(View.GONE);
         spinner_frame = findViewById(R.id.spinner_frame);
         spinner_frame.setVisibility(View.GONE);
-        Bundle extras = getIntent().getExtras();
-        email_or_phone = extras.getString("email_or_phone");
-        token_uuid = extras.getString("token_uuid");
 
+        sharedPreferences = getSharedPreferences(LoginActivity.AppPreferences, Context.MODE_PRIVATE );
+
+        String token = sharedPreferences.getString("Token", "");
 
         pin1 = findViewById(R.id.pin1);
         pin2 = findViewById(R.id.pin2);
@@ -87,19 +90,22 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     final String pin = pin1.getText().toString();
                     final String confirm_pin = pin2.getText().toString();
 
-                    if(pin1.equals("") || pin2.equals("")){
+                    if(pin.equals("") || confirm_pin.equals("")){
                         Toast.makeText(getApplicationContext(), "Required fields missing", Toast.LENGTH_SHORT).show();
                     }
-                    else if(!pin1.equals("") && !pin2.equals("")){
+                    else if(!pin.equals(confirm_pin)){
+                        Toast.makeText(getApplicationContext(), "Password/Confirm Password does not match!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
                         try{
                             spinner.setVisibility(View.VISIBLE);
                             spinner_frame.setVisibility(View.VISIBLE);
-                            String URL = LoginActivity.baseurl+"/new/password/reset/?password_uuid="+ URLEncoder.encode(token_uuid, "UTF-8");
+                            String URL = LoginActivity.baseurl+"/change/password/";
                             JSONObject jsonBody = new JSONObject();
-                            jsonBody.put("email_or_phone", email_or_phone);
-                            jsonBody.put("pin1", pin);
-                            jsonBody.put("pin2", confirm_pin);
+                            jsonBody.put("password", pin);
 
+
+                            final String requestBody = jsonBody.toString();
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -133,14 +139,39 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                 }
                             })
                             {
+
                                 @Override
-                                protected Map<String,String> getParams(){
-                                    Map<String,String> params = new HashMap<String, String>();
-                                    params.put("email_or_phone",email_or_phone);
-                                    params.put("pin1", pin);
-                                    params.put("pin2", confirm_pin);
+                                public String getBodyContentType() {
+                                    return "application/json; charset=utf-8";
+                                }
+
+
+                                @Override
+                                public byte[] getBody() throws AuthFailureError {
+                                    try {
+                                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                    } catch (UnsupportedEncodingException uee) {
+                                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                        return null;
+                                    }
+                                }
+//                            {
+//                                @Override
+//                                protected Map<String,String> getParams(){
+//                                    Map<String,String> params = new HashMap<String, String>();
+//                                    params.put("email_or_phone",email_or_phone);
+//                                    params.put("pin1", pin);
+//                                    params.put("pin2", confirm_pin);
+//                                    return params;
+//                                }
+
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    params.put("x-access-token", token);
                                     return params;
                                 }
+
                             };
 
                             stringRequest.setRetryPolicy(new RetryPolicy() {
@@ -161,12 +192,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             });
                             requestQueue.add(stringRequest);
                         }
-                        catch (UnsupportedEncodingException | JSONException e) {
+                        catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Error Encountered.", Toast.LENGTH_SHORT).show();
                     }
                 }
                 catch (Exception e){
