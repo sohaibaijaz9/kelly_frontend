@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar spinner;
     private TextView tv_forget_password;
 
-    public static String baseurl= "https://sohaib-48e32780.localhost.run";
+    public static String baseurl= "https://sohaib-34bb06a8.localhost.run";
 
     private int backpress = 0;
     @Override
@@ -79,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         tv_forget_password = findViewById(R.id.tv_forget_password);
         spinner_frame = findViewById(R.id.spinner_frame);
         spinner_frame.setVisibility(View.GONE);
+
 
 
         tv_forget_password.setOnClickListener(new View.OnClickListener(){
@@ -173,8 +175,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onResponse(String response) {
-                            spinner.setVisibility(View.GONE);
-                            spinner_frame.setVisibility(View.GONE);
+
 
                             Log.i("VOLLEY", response.toString());
                             try {
@@ -186,7 +187,10 @@ public class LoginActivity extends AppCompatActivity {
                                         Intent myIntent = new Intent(LoginActivity.this, VerifyActivity.class);//Optional parameters
                                         Bundle b = new Bundle();
                                         b.putString("Token", token);
+
                                         b.putString("email_phone", email_phone);
+                                        spinner.setVisibility(View.GONE);
+                                        spinner_frame.setVisibility(View.GONE);
                                         myIntent.putExtras(b);
                                         finish();
                                         LoginActivity.this.startActivity(myIntent);
@@ -197,9 +201,13 @@ public class LoginActivity extends AppCompatActivity {
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString("Token", token);
                                         editor.apply();
-
+                                        System.out.println("Token: "+ token);
                                         UserDetails.getUserDetails(LoginActivity.this);
 
+                                        UserDetails.getUserMessages(LoginActivity.this);
+
+                                        spinner.setVisibility(View.GONE);
+                                        spinner_frame.setVisibility(View.GONE);
                                         Intent myIntent = new Intent(LoginActivity.this, NavActivity.class);//Optional parameters
                                         finish();
                                         startActivity(myIntent);
@@ -207,6 +215,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                 }
                                 else if (json.getString("status").equals("401")||json.getString("status").equals("404")) {
+                                    spinner.setVisibility(View.GONE);
+                                    spinner_frame.setVisibility(View.GONE);
                                     Toast.makeText(LoginActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
 
                                 }

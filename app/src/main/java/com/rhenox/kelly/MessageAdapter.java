@@ -30,6 +30,10 @@ public class MessageAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void removeLast(){
+        this.messages.remove(this.messages.size()-1);
+    }
+
     @Override
     public int getCount() {
         return messages.size();
@@ -65,7 +69,15 @@ public class MessageAdapter extends BaseAdapter {
             convertView.setTag(holder);
 
             holder.name.setText("Kelly");
-            holder.messageBody.setText(message.getText());
+
+            if(message.getText().equals("")) {
+                holder.messageBody.setTextColor(R.color.colorCascadeGrey);
+                holder.messageBody.setText("typing ...");
+            }
+            else {
+                holder.messageBody.setText(message.getText());
+
+            }
 //            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
 
         }

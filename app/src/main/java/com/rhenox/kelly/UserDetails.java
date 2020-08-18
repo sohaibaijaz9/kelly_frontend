@@ -15,11 +15,14 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -134,6 +137,20 @@ public class UserDetails {
     }
 
 
+
+
+
+    public static boolean getUserMessages(final Context context){
+        final SharedPreferences sharedPreferences= Objects.requireNonNull(context).getSharedPreferences(LoginActivity.AppPreferences, Context.MODE_PRIVATE);
+        final RequestQueue requestQueue = Volley.newRequestQueue(context);
+        final String token = sharedPreferences.getString("Token", "");
+        DatabaseHandler db = new DatabaseHandler(context);
+        db.deleteAllMessages();
+
+
+
+        return false;
+    }
 
 
 
