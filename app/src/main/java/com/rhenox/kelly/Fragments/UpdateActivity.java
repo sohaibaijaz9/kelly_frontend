@@ -16,10 +16,14 @@
 
 package com.rhenox.kelly.Fragments;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.rhenox.kelly.R;
 
 public class UpdateActivity extends AppCompatActivity {
 
@@ -28,6 +32,11 @@ public class UpdateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Edit Account");
+
+//        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.blue_gray_15), PorterDuff.Mode.SRC_ATOP);
+        final  Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.baseColor), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().beginTransaction()

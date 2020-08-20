@@ -2,6 +2,8 @@ package com.rhenox.kelly.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -46,6 +48,10 @@ public class ChangeEmailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_email);
         getSupportActionBar().setTitle("Email Address");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.baseColor), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
 
         sharedPreferences = ChangeEmailActivity.this.getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
         final SharedPreferences sharedPreferences = getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
