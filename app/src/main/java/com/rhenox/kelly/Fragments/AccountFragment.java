@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -31,11 +30,8 @@ import com.ramijemli.percentagechartview.PercentageChartView;
 import com.ramijemli.percentagechartview.callback.ProgressTextFormatter;
 import com.rhenox.kelly.LoginActivity;
 import com.rhenox.kelly.R;
-import com.rhenox.kelly.ResetPasswordActivity;
-import com.rhenox.kelly.SignupActivity;
+import com.rhenox.kelly.ChangePasswordActivity;
 import com.rhenox.kelly.UpdateNameActivity;
-import com.rhenox.kelly.UpdatePhoneNumberActivity;
-import com.rhenox.kelly.VerifyActivity;
 
 
 import org.json.JSONException;
@@ -104,7 +100,7 @@ public class AccountFragment extends Fragment {
         txt_change_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), ResetPasswordActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ChangePasswordActivity.class);
                 startActivity(intent);
                 getActivity().finish();
             }

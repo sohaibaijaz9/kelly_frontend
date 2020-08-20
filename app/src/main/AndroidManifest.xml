@@ -49,7 +49,7 @@
             android:name=".ForgetPasswordActivity"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name=".ResetPasswordActivity"
+            android:name=".ChangePasswordActivity"
             android:screenOrientation="fullSensor" />
 
         <meta-data

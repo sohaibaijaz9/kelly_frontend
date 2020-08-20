@@ -156,7 +156,8 @@ public class SignupActivity extends AppCompatActivity {
                                             SignupActivity.this.startActivity(myIntent);
 
                                         }
-                                        else if (json.getString("status").equals("400")||json.getString("status").equals("404")) {
+                                        else if (json.getString("status").equals("400")||json.getString("status").equals("404") ||
+                                        json.getString("status").equals("401")) {
                                             Toast.makeText(SignupActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
                                         }
                                     } catch (JSONException e) {

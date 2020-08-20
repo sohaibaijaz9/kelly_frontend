@@ -112,7 +112,7 @@ public class ForgetPasswordVerify extends AppCompatActivity {
                                     if(json.getString("status").equals("200")){
 
                                         Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
-                                        Intent myIntent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
+                                        Intent myIntent = new Intent(getApplicationContext(), ChangePasswordActivity.class);
                                         myIntent.putExtra("token_uuid", token_uuid);
                                         myIntent.putExtra("email_or_phone", email_or_phone);
                                         finish();

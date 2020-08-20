@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar spinner;
     private TextView tv_forget_password;
 
-    public static String baseurl= "https://sohaib-34bb06a8.localhost.run";
+    public static String baseurl= "https://abcd-a961e203.localhost.run";
 
     private int backpress = 0;
     @Override
@@ -214,12 +214,13 @@ public class LoginActivity extends AppCompatActivity {
                                     }
 
                                 }
-                                else if (json.getString("status").equals("401")||json.getString("status").equals("404")) {
+                                else if (json.getString("status").equals("401")||json.getString("status").equals("404")
+                                ||json.getString("status").equals("400")) {
                                     spinner.setVisibility(View.GONE);
                                     spinner_frame.setVisibility(View.GONE);
                                     Toast.makeText(LoginActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
-
                                 }
+                                
                             } catch (JSONException e) {
                                 Log.e("VOLLEY", e.toString());
 
