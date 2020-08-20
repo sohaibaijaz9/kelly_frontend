@@ -112,8 +112,8 @@ public class UpdateFragment extends PreferenceFragmentCompat {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
 
-//                    Intent i = new Intent(getActivity(), ChangeEmailActivity.class);
-//                    UpdateFragment.this.startActivity(i);
+                    Intent i = new Intent(getActivity(), ChangeEmailActivity.class);
+                    UpdateFragment.this.startActivity(i);
 
                     return true;
                 }

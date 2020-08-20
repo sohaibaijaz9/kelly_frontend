@@ -28,6 +28,9 @@
             android:windowSoftInputMode="adjustResize"
             />
         <activity
+            android:name=".Fragments.ChangeEmailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".UpdateNameActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update Email address"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-condensed-medium" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/update_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="Enter Email"
+            android:backgroundTint="@color/baseColor" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="3dp">
+
+            <TextView
+                android:id="@+id/error_message_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:textColor="#DC1324"
+                android:text="Incorrect email address"
+                android:fontFamily="sans-serif-condensed-medium" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/changeEmail"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/next_icon"
+        android:enabled="false"
+        android:alpha="1.0"/>
+
+</RelativeLayout>
