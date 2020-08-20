@@ -147,7 +147,7 @@ public class UpdateFragment extends PreferenceFragmentCompat {
 
         try{
             if(!firstNameEditValue.equals("")){
-                final SharedPreferences sharedPreferences = Objects.requireNonNull(context).getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
+                final SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
                 final String token = sharedPreferences.getString("Token", "");
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put("name", firstNameEditValue);
