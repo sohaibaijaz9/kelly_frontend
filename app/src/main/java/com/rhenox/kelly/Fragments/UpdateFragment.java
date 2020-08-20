@@ -12,19 +12,25 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.rhenox.kelly.LoginActivity;
 import com.rhenox.kelly.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.rhenox.kelly.LoginActivity.AppPreferences;
 
@@ -35,6 +41,7 @@ public class UpdateFragment extends PreferenceFragmentCompat {
     private String lastName;
     private String phoneNumber;
     private String email;
+    Context context;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +50,7 @@ public class UpdateFragment extends PreferenceFragmentCompat {
 //        User user =User.getInstance();
         sharedPreferences = this.getActivity().getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
 //        sharedPreferences = this.getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-        String token = sharedPreferences.getString("Token", "");
+//        token = sharedPreferences.getString("Token", "");
         String first_name = sharedPreferences.getString("name", "");
 //        String last_name = sharedPreferences.getString("name", "");
         String email = sharedPreferences.getString("email", "");
@@ -82,7 +89,7 @@ public class UpdateFragment extends PreferenceFragmentCompat {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                     String firstNameEditValue = newValue.toString();
-//                    name_update(firstNameEditValue, "");
+                    name_update(firstNameEditValue);
                     return false;
 
                 }
@@ -136,91 +143,126 @@ public class UpdateFragment extends PreferenceFragmentCompat {
 
 
    // private boolean flag = true;
-//    public void name_update(final String firstNameEditValue, final String lastNameEditValue) {
-//
-//        String url = MainActivity.baseurl+"/update/name/";
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-//                new Response.Listener<String>() {
-//
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                        try {
-//                            JSONObject json = new JSONObject(response);
-//                            if (json.getString("status").equals("200")) {
-//
-////                                SharedPreferences.Editor editor = sharedPreferences.edit();
-////
-////                                editor.putString("first_name", json.getString("first_name"));
-////                                editor.putString("last_name", json.getString("last_name"));
-////                                editor.apply();
-//                                User user = User.getInstance();
-//                                user.setFirstName(json.getString("first_name"));
-//                                user.setLastName(json.getString("last_name"));
+    public void name_update(final String firstNameEditValue) {
+
+        try{
+            if(!firstNameEditValue.equals("")){
+                final SharedPreferences sharedPreferences = Objects.requireNonNull(context).getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
+                final String token = sharedPreferences.getString("Token", "");
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("name", firstNameEditValue);
+                final String requestBody = jsonBody.toString();
+
+                String url = LoginActivity.baseurl+"/update/name/";
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
+
+                            @Override
+                            public void onResponse(String response) {
+
+                                try {
+                                    JSONObject json = new JSONObject(response);
+                                    if (json.getString("status").equals("200")) {
+
+                                        SharedPreferences.Editor edit = sharedPreferences.edit();
+                                        edit.putString("name", json.getString("name"));
+                                        edit.apply();
 //                                if(lastNameEditValue.equals("")){
-//                                    EditTextPreference editTextFirstName = findPreference("firstName");
-//                                    editTextFirstName.setSummary(firstNameEditValue);
-//                                    editTextFirstName.setText(firstNameEditValue);
+                                        EditTextPreference editTextFirstName = findPreference("firstName");
+                                        editTextFirstName.setSummary(firstNameEditValue);
+                                        editTextFirstName.setText(firstNameEditValue);
 //                                }
 //                                if(firstNameEditValue.equals("")){
 //                                    EditTextPreference editTextLastName = findPreference("lastName");
 //                                    editTextLastName.setSummary(lastNameEditValue);
 //                                    editTextLastName.setText(lastNameEditValue);
 //                                }
-//                                Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
-//                            //  check1 =1;
-//                               // flag = true;
-//
-//                            }
-//                            else if(json.getString("status").equals("400")){
-//                                Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
-//
-//                               // flag = false;
-//                            }
-//                            else if(json.getString("status").equals("404")){
-//                                Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
+                                        //  check1 =1;
+                                        // flag = true;
+
+                                    }
+                                    else if(json.getString("status").equals("400")){
+                                        Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
+
+                                        // flag = false;
+                                    }
+                                    else if(json.getString("status").equals("404")){
+                                        Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
 //                                SettingsFragment.forcedLogout(getActivity());
-//                                // flag = false;
-//                            }
-//
-//
-//                        }
-//                        catch (JSONException e) {
-//                          //  flag = false;
-//                            e.printStackTrace();
-//                        }
-//                    }},
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
-//                      //  flag = false;
-//                    }
-//                })
-//
-//        {
-//            @Override
-//            protected Map<String,String> getParams(){
-//                Map<String,String> params = new HashMap<>();
-//                params.put("first_name", firstNameEditValue);
-//                params.put("last_name", lastNameEditValue);
-//
-//                return params;
-//            }
-//
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                Map<String, String> headers = new HashMap<>();
-//                headers.put("Authorization", sharedPreferences.getString("Token", ""));
-//                return headers;
-//            }
-//
-//        };
-//
-//        RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity());
-//        requestQueue.add(stringRequest);
-//        //return check1;
-//    }
+                                        // flag = false;
+                                    }
+
+
+                                }
+                                catch (JSONException e) {
+                                    //  flag = false;
+                                    e.printStackTrace();
+                                }
+                            }},
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                                //  flag = false;
+                            }
+                        })
+
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("x-access-token", token);
+                        return params;
+                    }
+
+                };
+
+                stringRequest.setRetryPolicy(new RetryPolicy() {
+                    @Override
+                    public int getCurrentTimeout() {
+                        return 50000;
+                    }
+
+                    @Override
+                    public int getCurrentRetryCount() {
+                        return 50000;
+                    }
+
+                    @Override
+                    public void retry(VolleyError error) throws VolleyError {
+
+                    }
+                });
+
+                RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity());
+                requestQueue.add(stringRequest);
+            }
+            else{
+                Toast.makeText(getActivity(), "Name field cannot be empty", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (Exception e){
+            Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 //    private boolean flag = true;
 //    public boolean name_update(final String firstNameEditValue, final String lastNameEditValue) {
