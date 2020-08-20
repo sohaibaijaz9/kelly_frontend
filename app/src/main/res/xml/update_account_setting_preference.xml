@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="userDetails"
+        android:title="Maaz Sabahuddin"
+        android:summary="maazsabahuddin@gmail.com\n+923442713545"
+        android:layout="@layout/image_preference"
+        android:icon="@drawable/profilefinal" />
+
+    <PreferenceCategory>
+
+        <EditTextPreference
+            android:key="firstName"
+            android:title="Name"
+            android:summary="Maaz"
+            android:dialogMessage="Update first name"
+            android:dialogTitle="First Name"
+            android:positiveButtonText="SAVE"
+            android:negativeButtonText="Cancel"
+            android:layout="@layout/update_setting_custom_preference"/>
+
+<!--        <EditTextPreference-->
+<!--            android:key="lastName"-->
+<!--            android:title="Last Name"-->
+<!--            android:summary="Sabahuddin"-->
+<!--            android:dialogMessage="Update last name"-->
+<!--            android:dialogTitle="Last Name"-->
+<!--            android:positiveButtonText="SAVE"-->
+<!--            android:negativeButtonText=""-->
+<!--            android:layout="@layout/update_setting_custom_preference"/>-->
+
+        <Preference
+            android:key="email"
+            android:title="Email"
+            android:summary="shahrukh@gmail.com"
+            android:layout="@layout/update_setting_custom_preference"
+           />
+
+        <Preference
+            android:key="phoneNumber"
+            android:title="Phone Number"
+            android:summary="+923442713545"
+            android:icon="@drawable/pickistan_flag"
+            android:layout="@layout/update_phonenumber_setting_preference"/>
+
+
+        <Preference
+            android:key="password"
+            android:title="Password"
+            android:summary="********"
+            android:layout="@layout/update_setting_custom_preference"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
