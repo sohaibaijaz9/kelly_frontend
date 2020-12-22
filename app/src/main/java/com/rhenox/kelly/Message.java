@@ -1,11 +1,14 @@
 package com.rhenox.kelly;
 
+import org.json.JSONObject;
+
 public class Message {
     private String text;
     private String time;
     private boolean belongsToCurrentUser;
     private String responseType = "SIMPLE";
-
+    private int questionNo;
+    private int answerNo;
     public Message(){
 
     }
@@ -14,11 +17,13 @@ public class Message {
         this.time = time;
         this.belongsToCurrentUser = belongsToCurrentUser;
     }
-    public Message(String text, String time, boolean belongsToCurrentUser, String responseType) {
+    public Message(String text, String time, boolean belongsToCurrentUser, String responseType, int questionNo, int answerNo) {
         this.text = text;
         this.time = time;
         this.belongsToCurrentUser = belongsToCurrentUser;
         this.responseType = responseType;
+        this.answerNo = answerNo;
+        this.questionNo = questionNo;
     }
 
     public String getText() {
@@ -48,4 +53,12 @@ public class Message {
     public String responseType(){
         return responseType;
     }
+    public int getQuestionNo(){
+        return questionNo;
+    }
+
+    public int getAnswerNo(){
+        return answerNo;
+    }
 }
+

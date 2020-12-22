@@ -263,11 +263,13 @@ public class HomeFragment extends Fragment{
                                     System.out.println("API: RESPONSE: "+response.toString());
                                     messageAdapter.removeLast();
                                     messageAdapter.add(new Message(json.getString("bot"), formatter.format(date), false));
+
                                     JSONArray options = json.getJSONArray("response");
                                     if(options.length() > 0){
-                                        editText.setEnabled(false);
+                                        messageAdapter.add(new Message("Lets select an option from below", formatter.format(date), false));
+
                                         for(int i=0; i<options.length(); i++){
-                                            messageAdapter.add(new Message(options.getString(i), formatter.format(date), false, "OPTION"));
+                                            messageAdapter.add(new Message(options.getString(i), formatter.format(date), false, "OPTION", json.getInt("question_no"), i));
                                         }
 
                                     }else{

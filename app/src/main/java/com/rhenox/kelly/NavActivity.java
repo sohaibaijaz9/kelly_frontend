@@ -151,6 +151,19 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
                                 else if (json.getString("status").equals("405")||json.getString("status").equals("400")||json.getString("status").equals("404")) {
 
                                     Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
+                                }else{
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.remove("token");
+                                    editor.remove("Token");
+                                    editor.remove("first_name");
+                                    editor.remove("last_name");
+                                    editor.remove("email");
+                                    editor.remove("phone_number");
+                                    editor.apply();
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                    startActivity(intent);
                                 }
                             } catch (JSONException e) {
                                 Log.e("VOLLEY", e.toString());

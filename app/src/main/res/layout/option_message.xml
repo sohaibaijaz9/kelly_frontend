@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="10dp"
     android:paddingLeft="15dp"
     android:paddingRight="60dp"
+    android:clickable="true"
     android:clipToPadding="false">
+
 
     <TextView
         android:id="@+id/message_body"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_below="@+id/name"
-        android:layout_alignLeft="@+id/name"
+
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="52dp"
         android:background="@drawable/options_message"
+        android:clickable="true"
         android:elevation="4dp"
+        android:focusable="true"
+        android:fontFamily="@font/montserrat"
         android:paddingHorizontal="16dp"
         android:paddingVertical="12dp"
         android:text="How are you doing? This is a long message that should probably wrap."
         android:textColor="@color/baseColor"
-        android:fontFamily="@font/montserrat"
-        android:clickable="true"
-        android:textSize="18dp" />
+        android:textSize="15sp"
+        tools:ignore="UnknownIdInLayout" />
 
 </RelativeLayout>

@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,8 @@ import com.rhenox.kelly.LoginActivity;
 import com.rhenox.kelly.R;
 import com.rhenox.kelly.ChangePasswordActivity;
 import com.rhenox.kelly.UpdateNameActivity;
+import com.rhenox.kelly.UserDetails;
+import com.rhenox.kelly.VerifyActivity;
 
 
 import org.json.JSONException;
@@ -46,13 +49,8 @@ public class AccountFragment extends Fragment {
 
     private View fragmentView;
     private SharedPreferences sharedPreferences;
-    private TextView tv_name;
-    private TextView tv_phone;
-    private TextView tv_email;
-    private Button btn_update_name;
-
-    private TextView txt_change_password;
-    private TextView txt_delete_account;
+    private TextView textView;
+    private TextView resultText;
 
     private PercentageChartView progressChart;
     @Nullable
@@ -62,9 +60,13 @@ public class AccountFragment extends Fragment {
         fragmentView = inflater.inflate(R.layout.fragment_account, container, false);
         sharedPreferences= Objects.requireNonNull(this.getActivity()).getSharedPreferences(LoginActivity.AppPreferences, Context.MODE_PRIVATE);
 
-
+        textView = (TextView) fragmentView.findViewById(R.id.textView);
+        resultText = (TextView) fragmentView.findViewById(R.id.resulttext);
+        resultText.setText("");
+        textView.setText("In Process");
 
         progressChart = fragmentView.findViewById(R.id.progress_wellness);
+        progressChart.setProgress(0, true);
 
         refreshUserDetails();
 
@@ -95,127 +97,132 @@ public class AccountFragment extends Fragment {
 
 
 
-//        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-//        txt_delete_account.setOnClickListener(new View.OnClickListener() {
-//
-//            String token = sharedPreferences.getString("Token", "");
-//            @Override
-//            public void onClick(View view) {
-//                String URL = LoginActivity.baseurl+"/register/";
-//                JSONObject jsonBody = new JSONObject();
-//                final String requestBody = jsonBody.toString();
-//
-//
-//                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                        Log.i("VOLLEY", response.toString());
-//                        try {
-//
-//                            JSONObject json = new JSONObject(response);
-//
-//                            if (json.getString("status").equals("200")) {
-//                                String token = json.getString("token");
-//
-//                                //Shared Preferences
-//                                Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_SHORT).show();
-//                                Intent myIntent = new Intent(getActivity(), LoginActivity.class);//Optional parameter
-//                                Bundle b = new Bundle();
-//                                b.putString("Token", token);
-//                                myIntent.putExtras(b);
-//                                getActivity().finish();
-//                                startActivity(myIntent);
-//
-//                            }
-//                            else if (json.getString("status").equals("400")||json.getString("status").equals("404")) {
-//                                Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_SHORT).show();
-//                            }
-//                        } catch (JSONException e) {
-//                            Log.e("VOLLEY", e.toString());
-//
-//                        }
-//                    }
-//
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//
-//                        Toast.makeText(getActivity(), "Server is temporarily down, sorry for your inconvenience", Toast.LENGTH_SHORT).show();
-//                        Log.e("VOLLEY", error.toString());
-//                    }
-//                })
-//
-//                {
-//
-//                    @Override
-//                    public String getBodyContentType() {
-//                        return "application/json; charset=utf-8";
-//                    }
-//
-//
-//                    @Override
-//                    public byte[] getBody() throws AuthFailureError {
-//                        try {
-//                            return requestBody == null ? null : requestBody.getBytes("utf-8");
-//                        } catch (UnsupportedEncodingException uee) {
-//                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-//                            return null;
-//
-//
-//                        }
-//                    }
-//
-//                    @Override
-//                    public Map<String, String> getHeaders() throws AuthFailureError {
-//                        Map<String, String> params = new HashMap<String, String>();
-//                        params.put("x-access-token", token);
-//                        return params;
-//                    }
-//
-//                };
-//
-//                stringRequest.setRetryPolicy(new RetryPolicy() {
-//                    @Override
-//                    public int getCurrentTimeout() {
-//                        return 50000;
-//                    }
-//
-//                    @Override
-//                    public int getCurrentRetryCount() {
-//                        return 50000;
-//                    }
-//
-//                    @Override
-//                    public void retry(VolleyError error) throws VolleyError {
-//
-//                    }
-//                });
-//
-//                requestQueue.add(stringRequest);
-//
-//            }
-//        });
-//
-//        btn_update_name.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View view) {
-//
-//                Intent i = new Intent(getActivity().getApplicationContext(), UpdateNameActivity.class);
-//                startActivity(i);
-//                getActivity().finish();
-//
-//            }
-//        });
-//
 
         return fragmentView;
     }
 
 
     private void refreshUserDetails(){
+        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        String token = sharedPreferences.getString("Token", "");
+
+        String URL = LoginActivity.baseurl+"/bdi/depression/check/";
+        JSONObject jsonBody = new JSONObject();
+
+        final String requestBody = jsonBody.toString();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.i("VOLLEY", response.toString());
+                try {
+                    JSONObject json = new JSONObject(response);
+                    if (json.getString("status").equals("200")) {
+                        if(json.getInt("score")  > 0){
+                            textView.setText("Depression");
+                            int score = json.getInt("score");
+                            progressChart.setProgress(score * 100/63, true);
+
+                            if(score >=1 && score <= 10){
+                                resultText.setText("These ups and downs are considered normal");
+                            }else if(score >=11 && score <= 16){
+                                resultText.setText(" Mild mood disturbance");
+                            }else if(score >=17 && score <= 20){
+                                resultText.setText("Borderline clinical depression");
+                            }else if(score >=21 && score <= 30){
+                                resultText.setText("Moderate depression ");
+                            }else if(score >=31 && score <= 40){
+                                resultText.setText("Severe depression ");
+                            }else if(score > 40){
+                                resultText.setText("Extreme depression ");
+                            }
+
+                        }else{
+                            textView.setText("In Process");
+                            resultText.setText("");
+                        }
+
+
+                    }
+                    else if (json.getString("status").equals("401")||json.getString("status").equals("400")||json.getString("status").equals("404")) {
+                        Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+//                                    else if (json.getString("status").equals("400")||json.getString("status").equals("404")) {
+//                                        Toast.makeText(VerifyActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
+//                                    }
+                } catch (JSONException e) {
+                    Log.e("VOLLEY", e.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getActivity(), "Server is temporarily down, sorry for your inconvenience", Toast.LENGTH_SHORT).show();
+                Log.e("VOLLEY", error.toString());
+                System.out.println(error.toString());
+            }
+        })
+        {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+//                        {
+//                            @Override
+//                            protected Map<String,String> getParams(){
+//                                Map<String,String> params = new HashMap<String, String>();
+//                                params.put("otp", otp);
+//                                params.put("email_or_phone", email_phone);
+//
+////                                params.put(KEY_EMAIL, email);
+//                                return params;
+//                            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("x-access-token", token);
+
+                return params;
+            }
+
+        };
+
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
+        requestQueue.add(stringRequest);
+
 
     }
+
+
 }

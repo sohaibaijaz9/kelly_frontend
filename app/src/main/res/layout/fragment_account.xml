@@ -17,20 +17,21 @@
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress_wellness" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_wellness"
+        app:layout_constraintVertical_bias="0.825" />
 
     <com.ramijemli.percentagechartview.PercentageChartView
         android:id="@+id/progress_wellness"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="229dp"
+        android:layout_height="212dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.11"
-        app:pcv_animDuration="800"
+        app:layout_constraintVertical_bias="0.075"
+        app:pcv_animDuration="1300"
         app:pcv_animInterpolator="anticipate_overshoot"
         app:pcv_backgroundBarColor="@color/colorCascadeGrey"
         app:pcv_backgroundBarThickness="20dp"
@@ -38,7 +39,7 @@
         app:pcv_gradientType="linear"
         app:pcv_mode="ring"
         app:pcv_orientation="clockwise"
-        app:pcv_progress="30"
+        app:pcv_progress="0"
         app:pcv_progressColor="#79158A"
         app:pcv_startAngle="90" />
 
@@ -55,5 +56,22 @@
         app:layout_constraintEnd_toEndOf="@+id/progress_wellness"
         app:layout_constraintStart_toStartOf="@+id/progress_wellness"
         app:layout_constraintTop_toTopOf="@+id/progress_wellness" />
+
+    <TextView
+        android:id="@+id/resulttext"
+        android:layout_width="233dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="57dp"
+        android:layout_marginBottom="57dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/baseColor"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress_wellness"
+        app:layout_constraintVertical_bias="0.393" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
