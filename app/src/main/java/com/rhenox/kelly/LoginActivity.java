@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar spinner;
     private TextView tv_forget_password;
 
-    public static String baseurl= "https://abcd-a961e203.localhost.run";
+    public static String baseurl= "https://maaz-d5181fb9.localhost.run";
 
     private int backpress = 0;
     @Override
@@ -83,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
+
         tv_forget_password.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -107,8 +109,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         sharedPreferences = getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
+
         if(!sharedPreferences.getString("Token",  "").isEmpty()) {
             Intent intent = new Intent(LoginActivity.this, NavActivity.class);
             finish();

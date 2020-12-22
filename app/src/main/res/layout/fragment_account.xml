@@ -6,119 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_update_name"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="140dp"
-        android:background="@mipmap/pencil"
-        android:fontFamily="@font/montserrat"
-        android:text="Update Name"
-        android:textColor="@color/colorWhite"
-        android:textColorHint="@color/baseColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_name"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="113dp"
-        android:layout_height="101dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.093"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_user" />
 
     <TextView
-        android:id="@+id/tv_email"
-        android:layout_width="272dp"
-        android:layout_height="32dp"
+        android:id="@+id/textView5"
+        android:layout_width="332dp"
+        android:layout_height="319dp"
         android:fontFamily="@font/montserrat"
-        android:text="maazsabahuddin@gmail.com"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.201"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="271dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="140dp"
-        android:fontFamily="@font/montserrat"
-        android:textColor="@color/baseColor"
-        android:text="Maaz Sabahuddin"
+        android:lineSpacingExtra="5dp"
+        android:text="This wellness scale determines your depression on the basis of multiple techniques involving high end Machine Learning Algorithms and Natural Language Processing along with the fusion of Beck Depression Inventory, still the result of this scale can be wrong in certain scenarios."
         android:textSize="18dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_phone"
-        android:layout_width="272dp"
-        android:layout_height="29dp"
-        android:fontFamily="@font/montserrat"
-        android:text="+923363115601"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.201"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_email" />
-
-    <TextView
-        android:id="@+id/txt_change_password"
-        android:layout_width="174dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="2dp"
-        android:clickable="true"
-        android:fontFamily="@font/raleway_bold"
-        android:text="Change password"
-        android:textAlignment="viewStart"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/colerDogerBlue"
-        android:textIsSelectable="false"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.118"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
-
-    <TextView
-        android:id="@+id/txt_delete_account"
-        android:layout_width="162dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="2dp"
-        android:clickable="true"
-        android:fontFamily="@font/raleway_bold"
-        android:text="Delete account"
-        android:textAlignment="textEnd"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/colerDogerBlue"
-        android:textIsSelectable="false"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toEndOf="@+id/txt_change_password"
-        app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.364"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_wellness" />
 
     <com.ramijemli.percentagechartview.PercentageChartView
         android:id="@+id/progress_wellness"
@@ -129,7 +29,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.794"
+        app:layout_constraintVertical_bias="0.11"
         app:pcv_animDuration="800"
         app:pcv_animInterpolator="anticipate_overshoot"
         app:pcv_backgroundBarColor="@color/colorCascadeGrey"
@@ -147,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
-        android:text="Wellness"
+        android:text="Depression"
         android:textColor="@color/baseColor"
         android:textSize="22sp"
         android:textStyle="bold"

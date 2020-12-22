@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:background="@drawable/my_message"
+        android:fontFamily="@font/montserrat"
         android:elevation="4dp"
         android:padding="10dp"
         android:text="Placeholder message"

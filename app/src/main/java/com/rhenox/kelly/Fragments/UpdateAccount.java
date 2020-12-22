@@ -25,7 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.rhenox.kelly.R;
 
-public class UpdateActivity extends AppCompatActivity {
+public class UpdateAccount extends AppCompatActivity {
 
 
     @Override

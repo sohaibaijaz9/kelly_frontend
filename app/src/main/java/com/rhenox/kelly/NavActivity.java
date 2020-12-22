@@ -29,9 +29,10 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
+import com.rhenox.kelly.Fragments.AboutFragment;
 import com.rhenox.kelly.Fragments.AccountFragment;
 import com.rhenox.kelly.Fragments.HomeFragment;
-import com.rhenox.kelly.Fragments.UpdateActivity;
+import com.rhenox.kelly.Fragments.UpdateAccount;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,21 +99,25 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 //                AccountFragment accountFragment = new AccountFragment();
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, accountFragment).commit();
                 try{
-                    startActivity(new Intent(getApplicationContext(), UpdateActivity.class));
+                    startActivity(new Intent(getApplicationContext(), UpdateAccount.class));
                 }
                 catch (Exception e){
                     Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.nav_wellness:
+                AccountFragment account = new AccountFragment();
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, account).commit();
+                break;
+            case R.id.nav_about:
+                AboutFragment about = new AboutFragment();
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, about).commit();
+                break;
 
             case R.id.nav_logout:
 
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.remove("Token");
-//                editor.apply();
-//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                finish();
-//                startActivity(intent);
                 requestQueue = Volley.newRequestQueue(getApplicationContext());
                 try {
                     String URL = LoginActivity.baseurl + "/logout/";

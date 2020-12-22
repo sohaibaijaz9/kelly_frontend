@@ -15,6 +15,16 @@
             android:icon="@drawable/ic_account"
             android:title="My Profile" />
 
+        <item
+            android:id="@+id/nav_wellness"
+            android:icon="@drawable/happy"
+            android:title="Wellness" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/aboutus"
+            android:title="About us" />
+
     </group>
     <item android:title="">
         <menu>

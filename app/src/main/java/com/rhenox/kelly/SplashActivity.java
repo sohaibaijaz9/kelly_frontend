@@ -1,6 +1,8 @@
 package com.rhenox.kelly;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Objects;
 
 public class SplashActivity extends AppCompatActivity {
+    //Shared preferences code
 
     private static int SPLASH_TIMEOUT = 1000;
     @Override

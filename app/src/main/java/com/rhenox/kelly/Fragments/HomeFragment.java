@@ -251,7 +251,7 @@ public class HomeFragment extends Fragment{
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            btn_send.setClickable(true);
+
 
                             Log.i("VOLLEY", response.toString());
                             try {
@@ -260,8 +260,19 @@ public class HomeFragment extends Fragment{
 
                                 if (json.getString("status").equals("200")) {
                                     Date date = new Date();
+                                    System.out.println("API: RESPONSE: "+response.toString());
                                     messageAdapter.removeLast();
                                     messageAdapter.add(new Message(json.getString("bot"), formatter.format(date), false));
+                                    JSONArray options = json.getJSONArray("response");
+                                    if(options.length() > 0){
+                                        editText.setEnabled(false);
+                                        for(int i=0; i<options.length(); i++){
+                                            messageAdapter.add(new Message(options.getString(i), formatter.format(date), false, "OPTION"));
+                                        }
+
+                                    }else{
+                                        btn_send.setClickable(true);
+                                    }
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                         v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
                                     } else {

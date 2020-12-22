@@ -56,29 +56,46 @@ public class MessageAdapter extends BaseAdapter {
         LayoutInflater messageInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         Message message = messages.get(i);
 
-        if (message.isBelongsToCurrentUser()) {
-            convertView = messageInflater.inflate(R.layout.my_message, null);
+
+        if(message.responseType().equals("OPTION")){
+            convertView = messageInflater.inflate(R.layout.option_message, null);
             holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
             convertView.setTag(holder);
             holder.messageBody.setText(message.getText());
-        } else {
-            convertView = messageInflater.inflate(R.layout.their_message, null);
-            holder.avatar = (View) convertView.findViewById(R.id.avatar);
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
-            convertView.setTag(holder);
 
-            holder.name.setText("Kelly");
+            holder.messageBody.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            if(message.getText().equals("")) {
-                holder.messageBody.setTextColor(R.color.colorCascadeGrey);
-                holder.messageBody.setText("typing ...");
+                }
+            });
+        }else if(message.responseType().equals("SIMPLE")){
+            if (message.isBelongsToCurrentUser()) {
+                convertView = messageInflater.inflate(R.layout.my_message, null);
+                holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
+                convertView.setTag(holder);
+                holder.messageBody.setText(message.getText());
             }
             else {
-                holder.messageBody.setText(message.getText());
+                convertView = messageInflater.inflate(R.layout.their_message, null);
+                holder.avatar = (View) convertView.findViewById(R.id.avatar);
+                holder.name = (TextView) convertView.findViewById(R.id.name);
+                holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
+                convertView.setTag(holder);
+
+                holder.name.setText("Kelly");
+
+                if(message.getText().equals("")) {
+                    holder.messageBody.setTextColor(R.color.colorCascadeGrey);
+                    holder.messageBody.setText("typing ...");
+                }
+                else {
+                    holder.messageBody.setText(message.getText());
+
+                }
+//            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
 
             }
-//            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
 
         }
 
