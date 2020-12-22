@@ -146,7 +146,7 @@ public class AccountFragment extends Fragment {
 
                     }
                     else if (json.getString("status").equals("401")||json.getString("status").equals("400")||json.getString("status").equals("404")) {
-                        Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
                     }
 //                                    else if (json.getString("status").equals("400")||json.getString("status").equals("404")) {
 //                                        Toast.makeText(VerifyActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
