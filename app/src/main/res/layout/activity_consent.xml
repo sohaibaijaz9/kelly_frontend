@@ -101,6 +101,7 @@
         android:fontFamily="@font/montserrat"
         android:text="All the personal data and conversations stored confidentially in a secured server. Kelly will use the conversations anonymously to determine wellness only."
         android:textAlignment="center"
+        android:justificationMode="inter_word"
         android:textSize="20dp"
 
         app:layout_constraintBottom_toBottomOf="parent"

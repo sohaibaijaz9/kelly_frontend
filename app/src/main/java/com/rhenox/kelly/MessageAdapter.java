@@ -90,6 +90,12 @@ public class MessageAdapter extends BaseAdapter {
             holder.messageBody.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    messages.remove(messages.size()-1);
+                    messages.remove(messages.size()-1);
+                    messages.remove(messages.size()-1);
+                    messages.remove(messages.size()-1);
+                    messages.remove(messages.size()-1);
+                    notifyDataSetChanged();
                     final RequestQueue requestQueue = Volley.newRequestQueue(context);
                     try {
                         String URL = LoginActivity.baseurl+"/bdi/chatting/";
@@ -109,12 +115,6 @@ public class MessageAdapter extends BaseAdapter {
                                 try {
                                     JSONObject json = new JSONObject(response);
                                     if (json.getInt("status") == 200) {
-                                        messages.remove(messages.size()-1);
-                                        messages.remove(messages.size()-1);
-                                        messages.remove(messages.size()-1);
-                                        messages.remove(messages.size()-1);
-                                        messages.remove(messages.size()-1);
-                                        notifyDataSetChanged();
 
                                     }
                                     else if (json.getString("status").equals("400")||json.getString("status").equals("404")) {

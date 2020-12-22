@@ -259,6 +259,7 @@ public class HomeFragment extends Fragment{
                                 JSONObject json = new JSONObject(response);
 
                                 if (json.getString("status").equals("200")) {
+
                                     Date date = new Date();
                                     System.out.println("API: RESPONSE: "+response.toString());
                                     messageAdapter.removeLast();
@@ -266,6 +267,7 @@ public class HomeFragment extends Fragment{
 
                                     JSONArray options = json.getJSONArray("response");
                                     if(options.length() > 0){
+                                        btn_send.setClickable(true);
                                         messageAdapter.add(new Message("Lets select an option from below", formatter.format(date), false));
 
                                         for(int i=0; i<options.length(); i++){
