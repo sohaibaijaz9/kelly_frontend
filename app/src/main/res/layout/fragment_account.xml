@@ -15,6 +15,7 @@
         android:lineSpacingExtra="5dp"
         android:text="This wellness scale determines your depression on the basis of multiple techniques involving high end Machine Learning Algorithms and Natural Language Processing along with the fusion of Beck Depression Inventory, still the result of this scale can be wrong in certain scenarios."
         android:textSize="18dp"
+        android:justificationMode="inter_word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
